@@ -1,0 +1,89 @@
+# Default values for taskd.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# The namespace in which to deploy resources
+namespace: "k8s-apps"
+
+image:
+  repository: darnellandries/taskd
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+persistence:
+  enabled: true
+  name: taskd
+  existingClaim: ""
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  storageClass: "openebs-hostpath"
+  path: /home/taskd/data/
+  annotations: {}
+  # subPath: "" # only mount a subpath of the Volume into the pod
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  # Currently needed to support sed command in taskd-init 
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 65532
+
+# This chart assumes the use of MetalLB or similar LB
+# Note that taskd is exposed on plain TCP. It is still
+# Possible to use regular ingress-controllers, but the
+# implementation is implementation-specific.
+# For example, for nginx-ingress-controller, the TCP-services
+# configmap needs to exist (and be specific at command line)
+# and it needs to container the port mapping. 
+# See: https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services/
+service:
+  type: LoadBalancer
+  port: 53589 
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# Taskd specific configuration
+taskd:
+  hostname: "taskd.example.org"
+  org: "homelab"
+  country: "EE"
+  state: "Harju"
+  locality: "Tallinn"
+  cert_expiration_days: "365"

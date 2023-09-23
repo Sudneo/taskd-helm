@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: taskd-config
+  namespace: {{ .Values.namespace }}
+data:
+  TASKD_HOSTNAME: "{{ .Values.taskd.hostname }}"
+  TASKD_CERT_ORG: "{{ .Values.taskd.org }}"
+  TASKD_CERT_COUNTRY: "{{ .Values.taskd.country }}"
+  TASKD_CERT_STATE: "{{ .Values.taskd.state }}"
+  TASKD_CERT_LOCALITY: "{{ .Values.taskd.locality }}"
+  TASKD_CERT_EXPIRATION_DAYS: "{{ .Values.taskd.cert_expiration_days }}"
+  
