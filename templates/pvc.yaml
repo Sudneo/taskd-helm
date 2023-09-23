@@ -3,9 +3,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ template "taskd.fullname" . }}
-  {{- if .Values.namespace }}
   namespace: {{ .Values.namespace }}
-  {{- end }}
   annotations:
   {{- with .Values.persistence.annotations  }}
   {{ toYaml . | nindent 4 }}
