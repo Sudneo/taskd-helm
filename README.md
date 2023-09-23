@@ -67,8 +67,7 @@ spec:
       capabilities:
         drop:
         - ALL
-      # Currently needed to support sed command in taskd-init
-      readOnlyRootFilesystem: false
+      readOnlyRootFilesystem: true
       runAsNonRoot: true
       runAsUser: 65532
       capabilities:
