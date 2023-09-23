@@ -49,6 +49,8 @@ spec:
               {{- if .Values.persistence.subPath }}
               subPath: {{ .Values.persistence.subPath }}
               {{- end }}
+            - name: pki-path
+              mountPath: "/home/taskd/writeable"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -69,3 +71,5 @@ spec:
           {{- else }}
           emptyDir: {}
           {{- end }}
+        - name: pki-path
+          emptyDir: {}
